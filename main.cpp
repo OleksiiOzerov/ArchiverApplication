@@ -1,4 +1,4 @@
-#include "MainWindow.hpp"
+#include "ArchiveView/MainWindow.hpp"
 
 #include <QApplication>
 

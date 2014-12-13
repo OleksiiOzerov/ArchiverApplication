@@ -1,10 +1,16 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
+//#include "FileViewModel.hpp"
+
+class FileViewModel;
 
 #include <QMainWindow>
 
+#include <memory>
+
 class QAction;
+class QSortFilterProxyModel;
 
 class MainWindow : public QMainWindow
 {
@@ -27,6 +33,10 @@ private slots:
     void ExtractArchive();
 
 private:
+    std::shared_ptr<FileViewModel> m_FileViewModel;
+
+    QSortFilterProxyModel * m_FileListModel;
+
     QMenu * m_FileMenu;
     QMenu * m_OpenRecentSubMenu;
 
@@ -37,7 +47,6 @@ private:
     QAction * m_ExtractAction;
     QAction * m_PropertiesAction;
     QAction * m_CloseAction;
-
 
 };
 

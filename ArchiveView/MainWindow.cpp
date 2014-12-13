@@ -1,31 +1,33 @@
 #include "MainWindow.hpp"
+#include "FileViewModel.hpp"
 
 #include <QtWidgets>
 
-MainWindow::MainWindow()
+MainWindow::MainWindow() : m_FileViewModel(new FileViewModel(this))
 {
-    QTableWidget * tableWidget = new QTableWidget(this);
+    //Central Widget
+    m_FileListModel = new QSortFilterProxyModel;
 
-    tableWidget->setRowCount(0);
-    tableWidget->setColumnCount(0);
-    tableWidget->setRowCount(5);
-    tableWidget->setColumnCount(5);
+    QTreeView * fileListView = new QTreeView;
+    fileListView->setRootIsDecorated(false);
+    fileListView->setAlternatingRowColors(true);
+    fileListView->setModel(m_FileListModel);
+    fileListView->setSortingEnabled(true);
 
-    tableWidget->setShowGrid(false);
-    tableWidget->verticalHeader()->setVisible(false);
+    fileListView->sortByColumn(1, Qt::AscendingOrder);
 
-    setCentralWidget(tableWidget);
+    m_FileListModel->setSourceModel(m_FileViewModel->GetItemModel());
 
+    setCentralWidget(fileListView);
+
+    //Menu and Toolbars
     CreateAcitions();
     CreateMenus();
 
-
+    //Main Window setup
+    setWindowTitle(tr("Archive"));
 //    setObjectName(QStringLiteral("MainWindow"));
-//    resize(400, 300);
-
-//    QWidget * centralWidget = new QWidget(this);
-//    centralWidget->setObjectName(QStringLiteral("centralWidget"));
-//    setCentralWidget(centralWidget);
+    resize(600, 300);
 
 //    setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
 }
