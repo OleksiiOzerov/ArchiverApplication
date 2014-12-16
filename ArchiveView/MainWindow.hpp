@@ -3,14 +3,17 @@
 
 //#include "FileViewModel.hpp"
 
-class FileViewModel;
-
 #include <QMainWindow>
 
 #include <memory>
 
 class QAction;
 class QSortFilterProxyModel;
+
+
+namespace Archiver
+{
+class FileViewModel;
 
 class MainWindow : public QMainWindow
 {
@@ -91,6 +94,6 @@ private:
     //Help menu Actions
     QAction * m_AboutAction;
 };
-
+}
 
 #endif // MAINWINDOW_HPP

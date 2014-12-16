@@ -3,6 +3,8 @@
 
 #include <QtWidgets>
 
+namespace Archiver
+{
 QWidget * MainWindow::GetCentralWidget()
 {
     //Central Widget
@@ -59,6 +61,8 @@ void MainWindow::OpenArchive()
                                tr("Open Archive"), ".",
                                tr("Tar archive (*.tar)"));
 
+    m_FileViewModel->OpenArchive(fileName);
+    m_FileListModel->setSourceModel(m_FileViewModel->GetItemModel());
 }
 
 void MainWindow::SaveAsArchive()
@@ -86,13 +90,13 @@ void MainWindow::CreateAcitions()
 {
     /* ## Archive Menu ## */
     //New
-    m_NewAction = new QAction(tr("&New"), this);
+    m_NewAction = new QAction(QIcon(":/images/new.png"), tr("&New"), this);
     m_NewAction->setShortcut(QKeySequence::New);
     m_NewAction->setStatusTip(tr("Create a new archive"));
     connect(m_NewAction, SIGNAL(triggered()), this, SLOT(NewArchive()));
 
     //Open
-    m_OpenAction = new QAction(tr("&Open"), this);
+    m_OpenAction = new QAction(QIcon(":/images/open.png"), tr("&Open"), this);
     m_OpenAction->setShortcut(QKeySequence::Open);
     m_OpenAction->setStatusTip(tr("Open archive"));
     connect(m_OpenAction, SIGNAL(triggered()), this, SLOT(OpenArchive()));
@@ -230,9 +234,9 @@ void MainWindow::CreateMenus()
 
 void MainWindow::CreateToolBar()
 {
-//    m_ArchiveToolBar = addToolBar(tr("Archive"));
-//    m_ArchiveToolBar->addAction(m_NewAction);
-//    m_ArchiveToolBar->addAction(m_OpenAction);
+    m_ArchiveToolBar = addToolBar(tr("Archive"));
+    m_ArchiveToolBar->addAction(m_NewAction);
+    m_ArchiveToolBar->addAction(m_OpenAction);
 //    m_ArchiveToolBar->addAction(m_OpenRecetnAction);
 //    m_ArchiveToolBar->addSeparator();
 //    m_ArchiveToolBar->addAction(m_ExtractAction);
@@ -262,4 +266,5 @@ void MainWindow::WriteSettings()
     QSettings settings("QtProject", "Archiver Application");
 
     settings.setValue("geometry", saveGeometry());
+}
 }
