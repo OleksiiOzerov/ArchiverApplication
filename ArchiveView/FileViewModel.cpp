@@ -1,20 +1,42 @@
 #include "FileViewModel.hpp"
 #include "../ArchiverModel/TarArchiver.hpp"
 
+
 #include <QtWidgets>
+#include <QMimeDatabase>
 #include <ctime>
 
 namespace Archiver
 {
 
-void addItem(QAbstractItemModel *model, const QString &name,
+void FileViewModel::addItem(const QString &name,
              const QString &size, const QString &type, const QString &date)
 {
-    model->insertRow(0);
-    model->setData(model->index(0, 0), name);
-    model->setData(model->index(0, 1), size);
-    model->setData(model->index(0, 2), type);
-    model->setData(model->index(0, 3), date);
+
+    QList<QStandardItem*> rowItems;
+
+    QStandardItem *nameItem = new QStandardItem(name);
+    QStandardItem *sizeItem = new QStandardItem(size);
+    QStandardItem *typeItem = new QStandardItem(type);
+    QStandardItem *dateItem = new QStandardItem(date);
+
+    nameItem->setEditable(false);
+    sizeItem->setEditable(false);
+    typeItem->setEditable(false);
+    dateItem->setEditable(false);
+
+    rowItems.push_back(nameItem);
+    rowItems.push_back(sizeItem);
+    rowItems.push_back(typeItem);
+    rowItems.push_back(dateItem);
+
+    m_ItemModel->insertRow(0, rowItems);
+
+
+//    m_ItemModel->setData(m_ItemModel->index(0, 0), name, Qt::DisplayRole);
+//    m_ItemModel->setData(m_ItemModel->index(0, 1), size, Qt::DisplayRole);
+//    m_ItemModel->setData(m_ItemModel->index(0, 2), type, Qt::DisplayRole);
+//    m_ItemModel->setData(m_ItemModel->index(0, 3), date, Qt::DisplayRole);
 }
 
 FileViewModel::FileViewModel(QObject *parent) :
@@ -25,11 +47,6 @@ FileViewModel::FileViewModel(QObject *parent) :
     m_ItemModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Size"));
     m_ItemModel->setHeaderData(2, Qt::Horizontal, QObject::tr("Type"));
     m_ItemModel->setHeaderData(3, Qt::Horizontal, QObject::tr("Date Modified"));
-
-//    addItem(m_ItemModel, "Happy New Year!", "303.1kB",
-//            "GIF image", QDateTime(QDate(2006, 12, 31), QTime(17, 03)));
-//    addItem(m_ItemModel, "Radically new concept", "Grace K. <grace@software-inc.com>",
-//            QDateTime(QDate(2006, 12, 22), QTime(9, 44)));
 }
 
 QAbstractItemModel * FileViewModel::GetItemModel() const
@@ -41,16 +58,17 @@ void FileViewModel::OpenArchive(const QString& archiveName)
 {
     m_Archiver->OpenArchive(archiveName.toStdString());
     std::vector<Header>& fileCollection = m_Archiver->GetFileCollection();
+    QMimeDatabase db;
 
     for (auto file : fileCollection)
     {
         time_t modificationTime = file.GetFileModificationTime();
+        QString fileName = QString::fromStdString(file.GetFileName());
 
-        addItem(m_ItemModel, QString::fromStdString(file.GetFileName()),
+        addItem(fileName,
                 QString::number(file.GetFileSize()),
-                "GIF image",
+                db.mimeTypeForFile(fileName).name(),
                 ctime(&modificationTime));
-
     }
 
 

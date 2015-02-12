@@ -17,7 +17,8 @@ SOURCES += \
     ArchiverModel/Header/HeaderReader/HeaderReader.cpp \
     ArchiverModel/Header/HeaderWriter/HeaderWriter.cpp \
     ArchiverModel/Header/Header.cpp \
-    ArchiverModel/TarArchiver.cpp
+    ArchiverModel/TarArchiver.cpp \
+    ArchiveView/FileNameDelegate.cpp
 
 HEADERS += \
     ArchiveView/MainWindow.hpp \
@@ -32,7 +33,8 @@ HEADERS += \
     ArchiverModel/Header/HeaderReader/HeaderReaderException.hpp \
     ArchiverModel/Header/HeaderWriter/HeaderWriter.hpp \
     ArchiverModel/Header/Header.hpp \
-    ArchiverModel/TarArchiver.hpp
+    ArchiverModel/TarArchiver.hpp \
+    ArchiveView/FileNameDelegate.hpp
 
 
 RESOURCES += archiver.qrc

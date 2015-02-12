@@ -1,5 +1,6 @@
 #include "MainWindow.hpp"
 #include "FileViewModel.hpp"
+#include "FileNameDelegate.hpp"
 
 #include <QtWidgets>
 
@@ -17,6 +18,9 @@ QWidget * MainWindow::GetCentralWidget()
     fileListView->setSortingEnabled(true);
 
     fileListView->sortByColumn(1, Qt::AscendingOrder);
+
+    FileNameDelegate *delegate = new FileNameDelegate;
+    fileListView->setItemDelegateForColumn(0, delegate);
 
     m_FileListModel->setSourceModel(m_FileViewModel->GetItemModel());
 
@@ -84,7 +88,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
     WriteSettings();
     event->accept();
 }
-
 
 void MainWindow::CreateAcitions()
 {

@@ -3,6 +3,7 @@
 
 #include <memory>
 
+class QStandardItemModel;
 class QAbstractItemModel;
 class QObject;
 class QString;
@@ -23,7 +24,10 @@ public:
     QAbstractItemModel * GetItemModel()const;
 
 private:
-    QAbstractItemModel * m_ItemModel;
+    void addItem(const QString &name, const QString &size,
+                 const QString &type, const QString &date);
+
+    QStandardItemModel * m_ItemModel;
 
     std::shared_ptr<TarArchiver> m_Archiver;
 };
